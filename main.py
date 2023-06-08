@@ -6,9 +6,9 @@ Generate twitter-like sharing URL of nicovideo videos for Misskey
 import json
 import urllib.parse
 import urllib.request
+import urllib.error
 
 import xmltodict  # pylint: disable=E0401
-
 
 def main():
     """ Main """
@@ -26,23 +26,39 @@ def main():
             configjson = json.dumps(config)
             configfile.write(configjson)
 
-    # Ask for video id
-    videoid = input("nicovideo Video ID> ")
-    # Output URL template
-    outputurl = f"{serverurl}/share"
+    # Loop
+    while True:
+        # Ask for video id
+        videoid = input("nicovideo Video ID> ")
+        # Output URL template
+        outputurl = f"{serverurl}/share"
 
-    # Request thumbinfo to nicovideo api
-    apiurl = f"https://ext.nicovideo.jp/api/getthumbinfo/{videoid}"
-    with urllib.request.urlopen(apiurl) as apiresponse:
-        response = apiresponse.read()
-    responsedict = xmltodict.parse(response)["nicovideo_thumb_response"]["thumb"]
-    # Generate text to note
-    videotitle = responsedict["title"]
-    videourl = responsedict["watch_url"]
-    notecontent = f"{videotitle}\n{videourl}?ref=misskey\n\n#{videoid}\n#ニコニコ動画"
-    # Generate sharing URL
-    notecontentquoted = urllib.parse.quote(notecontent, encoding="utf-8")
-    outputurl += f"?text={notecontentquoted}"
+        # Request thumbinfo to nicovideo api
+        apiurl = f"https://ext.nicovideo.jp/api/getthumbinfo/{videoid}"
+        try:
+            with urllib.request.urlopen(apiurl) as apiresponse:
+                response = apiresponse.read()
+        except (urllib.error.HTTPError, urllib.error.URLError):
+            print("Something went wrong while connecting to the nicovideo API server. Please try it again.")
+            continue
+        # Check if response data valid
+        responsedict = xmltodict.parse(response)["nicovideo_thumb_response"]
+        if "thumb" in responsedict:
+            # Valid data
+            print("Got valid video metadata from API.")
+            responsedict = responsedict["thumb"]
+        else:
+            # Invalid data
+            print("Got invalid video metadata from API. Please try it again.")
+            continue
+        # Generate text to note
+        videotitle = responsedict["title"]
+        videourl = responsedict["watch_url"]
+        notecontent = f"{videotitle}\n{videourl}?ref=misskey\n\n#{videoid}\n#ニコニコ動画"
+        # Generate sharing URL
+        notecontentquoted = urllib.parse.quote(notecontent, encoding="utf-8")
+        outputurl += f"?text={notecontentquoted}"
+        break
     return outputurl
 
 if __name__ == "__main__":
