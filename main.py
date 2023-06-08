@@ -12,6 +12,7 @@ import xmltodict  # pylint: disable=E0401
 
 def main():
     """ Main """
+    print("niconico-msky v0.0.1")
     # Check & Read config file
     try:
         with open("config.json", "r", encoding="utf-8") as configfile:
