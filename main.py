@@ -7,6 +7,7 @@ import json
 import urllib.parse
 import urllib.request
 import urllib.error
+import webbrowser
 
 import xmltodict  # pylint: disable=E0401
 
@@ -39,7 +40,8 @@ def main():
             with urllib.request.urlopen(apiurl) as apiresponse:
                 response = apiresponse.read()
         except (urllib.error.HTTPError, urllib.error.URLError):
-            print("Something went wrong while connecting to the nicovideo API server. Please try it again.")
+            print("Something went wrong while connecting to the nicovideo API server. "\
+                "Please try it again.")
             continue
         # Check if response data valid
         responsedict = xmltodict.parse(response)["nicovideo_thumb_response"]
@@ -61,5 +63,15 @@ def main():
         break
     return outputurl
 
+def openbrowser(url):
+    """ Output generated URL, then open it with the default browser. """
+    print("Url generated: " + url)
+    print("Opening with your browser...")
+    try:
+        webbrowser.open_new_tab(url)
+    except webbrowser.Error:
+        print("Something went wrong while opening with your browser.")
+
 if __name__ == "__main__":
-    print(main())
+    generated_url = main()
+    openbrowser(generated_url)
