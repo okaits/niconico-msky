@@ -20,6 +20,7 @@ https://misskey.okaits7534.mydns.jp/share?text=%E6%96%B0%E3%83%BB%E8%B1%AA%E8%A1
    	Title		: 新・豪血寺一族 -煩悩解放 - レッツゴー！陰陽師
    	URL		: https://www.nicovideo.jp/watch/sm9
    	Contributer	: 中の (4)
+   Is it OK? (Y/n)> y
    ```
 6. 結果の共有URLが出力されます
 7. `Do you want to open it with your default browser? (Y/n)> `にYで答えると、自動的にブラウザでURLを開いてくれます
