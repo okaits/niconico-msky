@@ -21,7 +21,7 @@ def main():
             serverurl = config["serverurl"]
     except (KeyError, FileNotFoundError):
         print("Config file not exists or corrupted. Creating new one...")
-        serverurl = input("Misskey server name> ")
+        serverurl = input("Misskey server> ")
         config = {"serverurl": serverurl}
         with open("config.json", "w", encoding="utf-8") as configfile:
             configjson = json.dumps(config)
