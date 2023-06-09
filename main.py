@@ -3,77 +3,58 @@
 Generate twitter-like sharing URL of nicovideo videos for Misskey
 """
 
-import json
-import urllib.parse
-import urllib.request
-import urllib.error
 import webbrowser
 
-import xmltodict  # pylint: disable=E0401
+import config
+import get_videodata
+import share_url
 
 def main():
     """ Main """
-    print("niconico-msky v0.0.1")
-    # Check & Read config file
-    try:
-        with open("config.json", "r", encoding="utf-8") as configfile:
-            config = json.load(configfile)
-            serverurl = config["serverurl"]
-    except (KeyError, FileNotFoundError):
-        print("Config file not exists or corrupted. Creating new one...")
-        serverurl = input("Misskey server> ")
-        if serverurl.endswith("/"):
-            serverurl = serverurl[:1]
-        config = {"serverurl": serverurl}
-        with open("config.json", "w", encoding="utf-8") as configfile:
-            configjson = json.dumps(config)
-            configfile.write(configjson)
+    print("niconico-msky v1.0.0")
+    print()
+    config_data = config.check_config()
 
     # Loop
     while True:
-        # Ask for video id
-        videoid = input("nicovideo Video ID> ")
-        # Output URL template
-        outputurl = f"{serverurl}/share"
+        print()
+        # Ask for videoid
+        print("Enter your video id.")
+        print("Enter \"exit\" to quit.")
+        videoid = input("videoid> ")
+        if videoid == "exit":
+            break
 
-        # Request thumbinfo to nicovideo api
-        apiurl = f"https://ext.nicovideo.jp/api/getthumbinfo/{videoid}"
+        # Get video's metadata
         try:
-            with urllib.request.urlopen(apiurl) as apiresponse:
-                response = apiresponse.read()
-        except (urllib.error.HTTPError, urllib.error.URLError):
-            print("Something went wrong while connecting to the nicovideo API server. "\
-                "Please try it again.")
+            videodata = get_videodata.get_videodata(videoid)
+        except get_videodata.Error.FetchFailed:
+            print("Wrong video id or no internet connection. Please try it again.")
             continue
-        # Check if response data valid
-        responsedict = xmltodict.parse(response)["nicovideo_thumb_response"]
-        if "thumb" in responsedict:
-            # Valid data
-            print("Got valid video metadata from API.")
-            responsedict = responsedict["thumb"]
-        else:
-            # Invalid data
-            print("Got invalid video metadata from API. Please try it again.")
+        print("Video informations:")
+        print(f"\tTitle\t\t: {videodata.title}")
+        print(f"\tURL\t\t: {videodata.url}")
+        print(f"\tContributer\t: {videodata.username} ({videodata.userid})")
+        prompt = input("Is it OK? (Y/n)> ")
+        if prompt == "n" or prompt == "N" :
+            print("Aborted.")
             continue
-        # Generate text to note
-        videotitle = responsedict["title"]
-        videourl = responsedict["watch_url"]
-        notecontent = f"{videotitle}\n{videourl}?ref=misskey\n\n#{videoid}\n#ニコニコ動画"
-        # Generate sharing URL
-        notecontentquoted = urllib.parse.quote(notecontent, encoding="utf-8")
-        outputurl += f"?text={notecontentquoted}"
-        break
-    return outputurl
 
-def openbrowser(url):
-    """ Output generated URL, then open it with the default browser. """
-    print("Url generated: " + url)
-    print("Opening with your browser...")
-    try:
-        webbrowser.open_new_tab(url)
-    except webbrowser.Error:
-        print("Something went wrong while opening with your browser.")
+        # Generate URL
+        text = share_url.ShareURL.gen_text(videodata)
+        url = share_url.ShareURL.gen_url(config_data.serverurl, text)
+
+        # Output generated URL
+        print(f"Generated URL: {url}")
+
+        # Ask for using browser
+        browserprompt = input("Do you want to open it with your default browser? (Y/n)> ")
+        if not ( browserprompt == "n" or browserprompt == "N" ):
+            print("Opening browser...")
+            try:
+                webbrowser.open_new_tab(url)
+            except webbrowser.Error:
+                print("Something went wrong with your browser.")
 
 if __name__ == "__main__":
-    generated_url = main()
-    openbrowser(generated_url)
+    main()
