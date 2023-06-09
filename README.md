@@ -1,7 +1,7 @@
 # niconico-msky v1.0.0
 
 ## niconico-msky is 何
-ニコニコ動画に投稿された動画を、Twitter共有ボタンでおなじみの形式でmisskeyに共有するURLを作ってくれます。
+ニコニコ動画に投稿された動画を、Twitter共有ボタンでおなじみの形式でmisskeyに共有するURLを作ってくれます。  
 例えば、動画: sm9, サーバー: misskey.okaits7534.mydns.jpで入力すると、次のURLが貰えます。
 
 ```
@@ -14,17 +14,15 @@ https://misskey.okaits7534.mydns.jp/share?text=%E6%96%B0%E3%83%BB%E8%B1%AA%E8%A1
 3. **初回のみ** `Misskey server> `となったら、サーバーのURLを入れます
 4. `videoid> `となったら、共有したい動画のIDを入れます
 5. こんな感じに確認メッセージが出てくるので、Yを押します （例としてsm9を挙げます）
-
-```
-videoid> sm9
-Video informations:
-	Title		: 新・豪血寺一族 -煩悩解放 - レッツゴー！陰陽師
-	URL		: https://www.nicovideo.jp/watch/sm9
-	Contributer	: 中の (4)
-Is it OK? (y/n)> 
-```
-1. 結果の共有URLが出力されます
-2. `Do you want to open it with your default browser? (Y/n)> `にYで答えると、自動的にブラウザでURLを開いてくれます
+   ```
+   videoid> sm9
+   Video informations:
+   	Title		: 新・豪血寺一族 -煩悩解放 - レッツゴー！陰陽師
+   	URL		: https://www.nicovideo.jp/watch/sm9
+   	Contributer	: 中の (4)
+   ```
+6. 結果の共有URLが出力されます
+7. `Do you want to open it with your default browser? (Y/n)> `にYで答えると、自動的にブラウザでURLを開いてくれます
 
 ## ライセンス
 MIT Licenseが適用されます。
