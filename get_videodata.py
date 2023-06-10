@@ -1,5 +1,7 @@
 """ Get videodata module """
 
+from typing import Union
+
 import urllib.request
 import urllib.error
 import xmltodict #pylint: disable=E0401
@@ -13,14 +15,14 @@ class Error(Exception):
 
 class VideoData():
     """ videodata """
-    def __init__(self, videoid):
-        self.videoid = videoid #pylint: disable=C0103
-        self.title = ""
-        self.url = ""
-        self.username = ""
-        self.userid = ""
+    def __init__(self, videoid: str) -> None:
+        self.videoid: str = videoid #pylint: disable=C0103
+        self.title: str = ""
+        self.url: str = ""
+        self.username: str = ""
+        self.userid: Union[str, int] = ""
 
-def get_videodata(videoid):
+def get_videodata(videoid: str) -> VideoData:
     """ Get videodata from nicovideo API, then return VideoData object """
     try:
         with urllib.request.urlopen(API_URL.format(videoid=videoid)) as res:

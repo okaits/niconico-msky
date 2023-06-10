@@ -9,7 +9,7 @@ import config
 import get_videodata
 import share_url
 
-def main():
+def main() -> None:
     """ Main """
     print("niconico-msky v1.0.0")
     print()

@@ -4,10 +4,10 @@ import os
 
 class Config():
     """ Config class """
-    def __init__(self):
-        self.serverurl = ""
+    def __init__(self) -> None:
+        self.serverurl: str = ""
 
-def check_config():
+def check_config() -> Config:
     """ Check config, then return config """
     while True:
         try:
@@ -22,7 +22,7 @@ def check_config():
     config.serverurl = serverurl
     return config
 
-def _create_config():
+def _create_config() -> None:
     """ Initial config wizard """
     print("Starting initial config wizard...")
     serverurl = input("Misskey server> ")
