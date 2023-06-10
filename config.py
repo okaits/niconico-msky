@@ -1,5 +1,6 @@
 """ Config module """
 import json
+import os
 
 class Config():
     """ Config class """
@@ -28,7 +29,7 @@ def _create_config():
     if serverurl.endswith("/"):
         serverurl = serverurl[:1]
     config = {"serverurl": serverurl}
-    with open("config.json", "w", encoding="utf-8") as configfile:
+    with open(os.path.dirname(__file__) + "/config.json", "w", encoding="utf-8") as configfile:
         configjson = json.dumps(config)
         configfile.write(configjson)
     print("Config file saved.")
