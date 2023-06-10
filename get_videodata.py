@@ -40,3 +40,11 @@ def get_videodata(videoid: str) -> VideoData:
         data.username = responsedata["ch_name"]
         data.userid = responsedata["ch_id"]
     return data
+
+def gen_video_info(videodata: VideoData) -> str:
+    """ Generate video info """
+    info = "Video informations:\n"
+    info += f"\tTitle\t\t: {videodata.title}\n"
+    info += f"\tURL\t\t: {videodata.url}\n"
+    info += f"\tContributer\t: {videodata.username} ({videodata.userid})"
+    return info

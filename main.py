@@ -31,10 +31,7 @@ def main() -> None:
         except get_videodata.Error.FetchFailed:
             print("Wrong video id or no internet connection. Please try it again.")
             continue
-        print("Video informations:")
-        print(f"\tTitle\t\t: {videodata.title}")
-        print(f"\tURL\t\t: {videodata.url}")
-        print(f"\tContributer\t: {videodata.username} ({videodata.userid})")
+        print(get_videodata.gen_video_info(videodata))
         prompt = input("Is it OK? (Y/n)> ")
         if prompt == "n" or prompt == "N" :
             print("Aborted.")
