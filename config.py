@@ -32,7 +32,7 @@ def check_config(auto_creating: bool = True) -> Config:
     config.servers = servers
     return config
 
-def create_config(no_add: bool = False, serverurl: str = None) -> None:
+def update_config(no_add: bool = False, serverurl: str = None) -> None:
     """ Initial config wizard """
 
     if os.path.exists(os.path.dirname(__file__) + "/config.json") and not no_add:
@@ -43,7 +43,7 @@ def create_config(no_add: bool = False, serverurl: str = None) -> None:
         except Config.Error.CouldNotReadConfigFile:
             # Config file corrupted
             print("Config file corrupted. creating new one.")
-            create_config(no_add=True)
+            update_config(no_add=True)
             return
         serverurl = input("Misskey server> ") if not serverurl else serverurl
         # Append new server to config

@@ -96,7 +96,7 @@ def main() -> None:
             print()
     elif args.configure:
         print("niconico-msky v1.1.0\n")
-        config.create_config(serverurl=args.server_url)
+        config.update_config(serverurl=args.server_url)
     else:
         try:
             config_data = config.check_config(auto_creating=False)
