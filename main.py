@@ -95,7 +95,7 @@ def main() -> None:
             main_process(videoid, serverurl)
             print()
     elif args.configure:
-        print("niconico-msky v1.0.0\n")
+        print("niconico-msky v1.1.0\n")
         config.create_config(serverurl=args.server_url)
     else:
         try:
