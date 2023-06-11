@@ -12,7 +12,7 @@ class Config():
         class CouldNotReadConfigFile(Exception):
             """ Couldn't read config file. """
 
-def check_config(create_config: bool = True) -> Config:
+def check_config(auto_creating: bool = True) -> Config:
     """ Check config, then return config """
     while True:
         try:
@@ -20,8 +20,8 @@ def check_config(create_config: bool = True) -> Config:
                 config = json.load(configfile)
                 serverurl = config["serverurl"]
         except (KeyError, FileNotFoundError) as exc:
-            if create_config is True:
-                create_config()
+            if auto_creating is True:
+                auto_creating()
             else:
                 raise Config.Error.CouldNotReadConfigFile(
                     "Config file corrupted or not found."
