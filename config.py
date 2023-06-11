@@ -5,7 +5,7 @@ import os
 class Config():
     """ Config class """
     def __init__(self) -> None:
-        self.serverurl: str = ""
+        self.servers: list[dict] = ""
 
     class Error(Exception):
         """ Errors """
@@ -18,7 +18,7 @@ def check_config(auto_creating: bool = True) -> Config:
         try:
             with open("config.json", "r", encoding="utf-8") as configfile:
                 config = json.load(configfile)
-                serverurl = config["serverurl"]
+                servers = config["servers"]
         except (KeyError, FileNotFoundError) as exc:
             if auto_creating is True:
                 auto_creating()
@@ -29,17 +29,35 @@ def check_config(auto_creating: bool = True) -> Config:
         else:
             break
     config = Config()
-    config.serverurl = serverurl
+    config.servers = servers
     return config
 
-def create_config() -> None:
+def create_config(no_add: bool = False, serverurl: str = None) -> None:
     """ Initial config wizard """
-    print("Starting initial config wizard...")
-    serverurl = input("Misskey server> ")
-    if serverurl.endswith("/"):
-        serverurl = serverurl[:1]
-    config = {"serverurl": serverurl}
+
+    if os.path.exists(os.path.dirname(__file__) + "/config.json") and not no_add:
+        # Config file exists
+        try:
+            # Read current config file
+            config = check_config(auto_creating=False)
+        except Config.Error.CouldNotReadConfigFile:
+            # Config file corrupted
+            print("Config file corrupted. creating new one.")
+            create_config(no_add=True)
+            return
+        serverurl = input("Misskey server> ") if not serverurl else serverurl
+        # Append new server to config
+        config = {"servers": config.servers}
+        config["servers"].append(serverurl)
+    else:
+        # Config file doesn't exists or regenerating requested
+        serverurl = input("Misskey server> ") if not serverurl else serverurl
+        if serverurl.endswith("/"):
+            serverurl = serverurl[:1]
+        config = {"servers": [serverurl]}
+
+    # Save config file
+    configjson = json.dumps(config)
     with open(os.path.dirname(__file__) + "/config.json", "w", encoding="utf-8") as configfile:
-        configjson = json.dumps(config)
         configfile.write(configjson)
     print("Config file saved.")

@@ -10,16 +10,25 @@ https://misskey.okaits7534.mydns.jp/share?text=%E6%96%B0%E3%83%BB%E8%B1%AA%E8%A1
 （出力されたURLのドメイン部分を変えると他のサーバーで流用もできます。）
 ## 使い方
 ### 初期設定（全モード共通）
+<details><summary>開く</summary>
+
 1. Python3を使える環境をセットアップ
-2. `python3 main.py -c`
-3. `Misskey server> `と聞かれたら、自分のサーバーのURLを入力する
-4. `Config file saved.`と言われたら準備完了
+2. 次のコマンドを実行
+   ```bash
+   python3 main.py -cu 自分のサーバーのURL
+   ```
+</details>
+
 ### インタラクティブモード
 <details><summary>開く</summary>
 
-1. `python3 main.py -i`
-2. `videoid> `と聞かれたら、共有したい動画のIDを入れます
-3. こんな感じに確認メッセージが出てくるので、Yを押します （例としてsm9を挙げます）
+1. `python3 main.py -i`  
+   (一時的に他のサーバーを指定したい場合、`python3 main.py -iu サーバーのURL`を実行してください。)
+2. 複数サーバーが登録されていて、サーバーの指定がない場合:
+   1. `Multiple servers found in your config file:`の後に登録されたサーバーの一覧が出てくるので、自分のサーバーの番号を確認
+   2. `Which server do you want to use? > `にその番号を入力する
+3. `videoid> `と聞かれたら、共有したい動画のIDを入れます
+4. こんな感じに確認メッセージが出てくるので、Yを押します （例としてsm9を挙げます）
    ```
    videoid> sm9
    Video informations:
@@ -28,16 +37,22 @@ https://misskey.okaits7534.mydns.jp/share?text=%E6%96%B0%E3%83%BB%E8%B1%AA%E8%A1
    	Contributer	: 中の (4)
    Is it OK? (Y/n)> y
    ```
-4. 結果の共有URLが出力されます
-5. `Do you want to open it with your default browser? (Y/n)> `にYで答えると、自動的にブラウザでURLを開いてくれます
-6. 他に共有したい動画があれば4に戻り、なければ`videoid> `に`exit`と答えることで終了します。
+5. 結果の共有URLが出力されます
+6. `Do you want to open it with your default browser? (Y/n)> `にYで答えると、自動的にブラウザでURLを開いてくれます
+7. 他に共有したい動画があれば4に戻り、なければ`videoid> `に`exit`と答えることで終了します。
 </details>
 
 ### 動画ID指定モード
 <details><summary>開く</summary>
 
+#### 登録されたサーバーが一つ、または登録された全てのサーバーを使う場合
 1. `python3 main.py -v 動画ID`
 2. 結果の共有URLが出力されます
+
+#### 登録されたサーバーが２つ以上、または一時的に他のサーバーのURLを使う場合
+1. `python3 main.py -v 動画ID -u サーバーのURL`
+2. 結果の共有URLが出力されます
+
 </details>
 
 ## ライセンス
