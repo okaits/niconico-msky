@@ -45,7 +45,8 @@ def update_config(no_add: bool = False, serverurl: str = None) -> None:
             print("Config file corrupted. creating new one.")
             update_config(no_add=True)
             return
-        serverurl = input("Misskey server> ") if not serverurl else serverurl
+        serverurl = input("Misskey server> ").lstrip("https://").lstrip("http://") \
+            if not serverurl else serverurl
         if serverurl.endswith("/"):
             serverurl = serverurl[:1]
         # Append new server to config
@@ -53,7 +54,8 @@ def update_config(no_add: bool = False, serverurl: str = None) -> None:
         config["servers"].append(serverurl)
     else:
         # Config file doesn't exists or regenerating requested
-        serverurl = input("Misskey server> ") if not serverurl else serverurl
+        serverurl = input("Misskey server> ").lstrip("https://").lstript("http://") \
+            if not serverurl else serverurl
         if serverurl.endswith("/"):
             serverurl = serverurl[:1]
         config = {"servers": [serverurl]}

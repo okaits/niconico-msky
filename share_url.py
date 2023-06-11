@@ -24,4 +24,4 @@ class ShareURL():
     def gen_url(serverurl: str, text: str) -> None: #pylint: disable=E0213
         """ Generate share URL from note text """
         quoted_text = urllib.parse.quote(text, encoding="utf-8")
-        return f"{serverurl}/share?text={quoted_text}"
+        return f"https://{serverurl}/share?text={quoted_text}"
