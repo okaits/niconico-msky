@@ -62,10 +62,10 @@ def main() -> None:
 
     # Argument parsing
     args = argument_parsing()
-    config_data = config.check_config()
 
     if args.interactive: # videoid exists in commandline args
         print("niconico-msky v1.0.0\n")
+        config_data = config.check_config(create_config=True)
         while True:
             # Ask for videoid
             print("Enter your video id.")
@@ -77,6 +77,12 @@ def main() -> None:
             main_process(videoid, config_data)
             print()
     else:
+        try:
+            config_data = config.check_config(create_config=False)
+        except config.Config.Error.CouldNotReadConfigFile:
+            print("Couldn't read config file. "
+            "Config file may be corrupt or non-existent.")
+            return
         main_process(args.videoid, config_data, interactive=False)
 
 
