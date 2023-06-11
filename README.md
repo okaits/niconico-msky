@@ -9,7 +9,10 @@ https://misskey.okaits7534.mydns.jp/share?text=%E6%96%B0%E3%83%BB%E8%B1%AA%E8%A1
 ```
 （出力されたURLのドメイン部分を変えると他のサーバーで流用もできます。）
 ## 使い方
+
 ### インタラクティブモード
+<details><summary>開く</summary>
+
 1. Python3を使える環境をセットアップ
 2. `python3 main.py -i`
 3. **初回のみ** `Misskey server> `となったら、サーバーのURLを入れます
@@ -26,8 +29,11 @@ https://misskey.okaits7534.mydns.jp/share?text=%E6%96%B0%E3%83%BB%E8%B1%AA%E8%A1
 6. 結果の共有URLが出力されます
 7. `Do you want to open it with your default browser? (Y/n)> `にYで答えると、自動的にブラウザでURLを開いてくれます
 8. 他に共有したい動画があれば4に戻り、なければ`videoid> `に`exit`と答えることで終了します。
+</details>
 
 ### 動画ID指定モード
+<details><summary>開く</summary>
+
 1. Python3を使える環境をセットアップ
 2. `python3 main.py -v 動画ID`
 3. **初回のみ** `Misskey server> `と聞かれたら、サーバーのURLを入れます
@@ -42,6 +48,7 @@ https://misskey.okaits7534.mydns.jp/share?text=%E6%96%B0%E3%83%BB%E8%B1%AA%E8%A1
    ```
 5. 結果の共有URLが出力されます
 6. `Do you want to open it with your default browser? (Y/n) `にYで答えると、自動的にブラウザでURLを開いてくれます
+</details>
 
 ## ライセンス
 MIT Licenseが適用されます。
