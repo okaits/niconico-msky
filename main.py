@@ -20,6 +20,7 @@ def argument_parsing() -> argparse_Namespace:
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("-v", "--videoid", help="Video ID", metavar="ID")
     mode.add_argument("-i", "--interactive", help="Interactive Mode", action="store_true", default=False)
+    mode.add_argument("-c", "--configure", help="Create config file", action="store_true", default=False)
     return parser.parse_args()
 
 def main_process(videoid: str, config_data: config.Config, interactive: bool = True) -> None:
@@ -76,6 +77,9 @@ def main() -> None:
 
             main_process(videoid, config_data)
             print()
+    elif args.configure:
+        print("niconico-msky v1.0.0\n")
+        config.create_config()
     else:
         try:
             config_data = config.check_config(create_config=False)

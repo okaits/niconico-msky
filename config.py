@@ -21,7 +21,7 @@ def check_config(create_config: bool = True) -> Config:
                 serverurl = config["serverurl"]
         except (KeyError, FileNotFoundError) as exc:
             if create_config is True:
-                _create_config()
+                create_config()
             else:
                 raise Config.Error.CouldNotReadConfigFile(
                     "Config file corrupted or not found."
@@ -32,7 +32,7 @@ def check_config(create_config: bool = True) -> Config:
     config.serverurl = serverurl
     return config
 
-def _create_config() -> None:
+def create_config() -> None:
     """ Initial config wizard """
     print("Starting initial config wizard...")
     serverurl = input("Misskey server> ")
