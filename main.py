@@ -22,7 +22,7 @@ def argument_parsing() -> argparse_Namespace:
     mode.add_argument("-i", "--interactive", help="Interactive Mode", action="store_true", default=False)
     return parser.parse_args()
 
-def main_process(videoid: str, config_data: config.Config) -> None:
+def main_process(videoid: str, config_data: config.Config, interactive: bool = True) -> None:
     """ Main process. (Get videodata, generate URL, and open it) """
     # Get video's metadata
     try:
@@ -30,38 +30,42 @@ def main_process(videoid: str, config_data: config.Config) -> None:
     except get_videodata.Error.FetchFailed:
         print("Wrong video id or no internet connection. Please try it again.")
         return
-    print(get_videodata.gen_video_info(videodata))
-    prompt = input("Is it OK? (Y/n)> ")
-    if prompt == "n" or prompt == "N" :
-        print("Aborted.")
-        return
+    if interactive is True:
+        print(get_videodata.gen_video_info(videodata))
+        prompt = input("Is it OK? (Y/n)> ")
+        if prompt == "n" or prompt == "N" :
+            print("Aborted.")
+            return
 
     # Generate URL
     text = share_url.ShareURL.gen_text(videodata)
     url = share_url.ShareURL.gen_url(config_data.serverurl, text)
 
     # Output generated URL
-    print(f"Generated URL: {url}")
+    if interactive is True:
+        print(f"Generated URL: {url}")
+    else:
+        print(url)
 
     # Ask for using browser
-    browserprompt = input("Do you want to open it with your default browser? (Y/n)> ")
-    if not ( browserprompt == "n" or browserprompt == "N" ):
-        print("Opening browser...")
-        try:
-            webbrowser.open_new_tab(url)
-        except webbrowser.Error:
-            print("Something went wrong with your browser.")
+    if interactive is True:
+        browserprompt = input("Do you want to open it with your default browser? (Y/n)> ")
+        if not ( browserprompt == "n" or browserprompt == "N" ):
+            print("Opening browser...")
+            try:
+                webbrowser.open_new_tab(url)
+            except webbrowser.Error:
+                print("Something went wrong with your browser.")
 
 def main() -> None:
     """ Main """
-    print("niconico-msky v1.0.0")
-    print()
 
     # Argument parsing
     args = argument_parsing()
     config_data = config.check_config()
 
     if args.interactive: # videoid exists in commandline args
+        print("niconico-msky v1.0.0\n")
         while True:
             # Ask for videoid
             print("Enter your video id.")
@@ -71,9 +75,9 @@ def main() -> None:
                 break
 
             main_process(videoid, config_data)
-            print("")
+            print()
     else:
-        main_process(args.videoid, config_data)
+        main_process(args.videoid, config_data, interactive=False)
 
 
 if __name__ == "__main__":
