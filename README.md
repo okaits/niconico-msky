@@ -9,15 +9,17 @@ https://misskey.okaits7534.mydns.jp/share?text=%E6%96%B0%E3%83%BB%E8%B1%AA%E8%A1
 ```
 （出力されたURLのドメイン部分を変えると他のサーバーで流用もできます。）
 ## 使い方
-
+### 初期設定（全モード共通）
+1. Python3を使える環境をセットアップ
+2. `python3 main.py -c`
+3. `Misskey server> `と聞かれたら、自分のサーバーのURLを入力する
+4. `Config file saved.`と言われたら準備完了
 ### インタラクティブモード
 <details><summary>開く</summary>
 
-1. Python3を使える環境をセットアップ
-2. `python3 main.py -i`
-3. **初回のみ** `Misskey server> `となったら、サーバーのURLを入れます
-4. `videoid> `と聞かれたら、共有したい動画のIDを入れます
-5. こんな感じに確認メッセージが出てくるので、Yを押します （例としてsm9を挙げます）
+1. `python3 main.py -i`
+2. `videoid> `と聞かれたら、共有したい動画のIDを入れます
+3. こんな感じに確認メッセージが出てくるので、Yを押します （例としてsm9を挙げます）
    ```
    videoid> sm9
    Video informations:
@@ -26,28 +28,16 @@ https://misskey.okaits7534.mydns.jp/share?text=%E6%96%B0%E3%83%BB%E8%B1%AA%E8%A1
    	Contributer	: 中の (4)
    Is it OK? (Y/n)> y
    ```
-6. 結果の共有URLが出力されます
-7. `Do you want to open it with your default browser? (Y/n)> `にYで答えると、自動的にブラウザでURLを開いてくれます
-8. 他に共有したい動画があれば4に戻り、なければ`videoid> `に`exit`と答えることで終了します。
+4. 結果の共有URLが出力されます
+5. `Do you want to open it with your default browser? (Y/n)> `にYで答えると、自動的にブラウザでURLを開いてくれます
+6. 他に共有したい動画があれば4に戻り、なければ`videoid> `に`exit`と答えることで終了します。
 </details>
 
 ### 動画ID指定モード
 <details><summary>開く</summary>
 
-1. Python3を使える環境をセットアップ
-2. `python3 main.py -v 動画ID`
-3. **初回のみ** `Misskey server> `と聞かれたら、サーバーのURLを入れます
-4. こんな感じに確認メッセージが出てくるので、Yを押します （例としてsm9を挙げます）
-   ```
-   videoid> sm9
-   Video informations:
-   	Title		: 新・豪血寺一族 -煩悩解放 - レッツゴー！陰陽師
-   	URL		: https://www.nicovideo.jp/watch/sm9
-   	Contributer	: 中の (4)
-   Is it OK? (Y/n)> y
-   ```
-5. 結果の共有URLが出力されます
-6. `Do you want to open it with your default browser? (Y/n) `にYで答えると、自動的にブラウザでURLを開いてくれます
+1. `python3 main.py -v 動画ID`
+2. 結果の共有URLが出力されます
 </details>
 
 ## ライセンス
