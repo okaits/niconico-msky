@@ -46,6 +46,8 @@ def update_config(no_add: bool = False, serverurl: str = None) -> None:
             update_config(no_add=True)
             return
         serverurl = input("Misskey server> ") if not serverurl else serverurl
+        if serverurl.endswith("/"):
+            serverurl = serverurl[:1]
         # Append new server to config
         config = {"servers": config.servers}
         config["servers"].append(serverurl)
