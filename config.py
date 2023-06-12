@@ -32,10 +32,37 @@ def check_config(auto_creating: bool = True) -> Config:
     config.servers = servers
     return config
 
-def update_config(no_add: bool = False, serverurl: str = None) -> None:
+def update_config(no_add: bool = False, delete: bool = False, serverurl: str = None) -> None:
     """ Initial config wizard """
 
-    if os.path.exists(os.path.dirname(__file__) + "/config.json") and not no_add:
+    if delete:
+        # Deleting server requested
+        try:
+            config = check_config(auto_creating=False)
+        except Config.Error.CouldNotReadConfigFile:
+            # Config file corrupted
+            print("Config file corrupted. Aborting. (use -c to re-generate)")
+            return
+        if len(config.servers) > 1 and not serverurl:
+            print("Multiple servers found in your config file:")
+            count = 0
+            for serverurl in config.servers:
+                print(f"{count}: {serverurl}")
+                count = count + 1
+            choice = input("Which server do you want to delete? > ")
+
+            try:
+                serverurl = config.servers[int(choice)]
+            except KeyError:
+                print("Value not valid.")
+                return
+        elif len(config.servers) == 1 and not serverurl:
+            serverurl = config.servers[0]
+
+        config.servers.remove(serverurl)
+        config = {"servers": config.servers}
+
+    elif os.path.exists(os.path.dirname(__file__) + "/config.json") and not no_add:
         # Config file exists
         try:
             # Read current config file
@@ -55,6 +82,7 @@ def update_config(no_add: bool = False, serverurl: str = None) -> None:
         # Append new server to config
         config = {"servers": config.servers}
         config["servers"].append(serverurl)
+
     else:
         # Config file doesn't exists or regenerating requested
         serverurl = input("Misskey server> ").lstrip("https://").lstript("http://") \

@@ -21,6 +21,7 @@ def argument_parsing() -> argparse_Namespace:
     mode.add_argument("-v", "--videoid", help="Video ID", metavar="ID", default=None)
     mode.add_argument("-i", "--interactive", help="Interactive Mode", action="store_true", default=False)
     mode.add_argument("-c", "--configure", help="Create config file, or append new server", action="store_true", default=False)
+    mode.add_argument("-d", "--delete", help="Delete a server from config file", action="store_true", default=False)
     parser.add_argument("-u", "--server_url", help="Server URL", default=None)
     return parser.parse_args()
 
@@ -94,6 +95,9 @@ def main() -> None:
 
             main_process(videoid, serverurl)
             print()
+    elif args.delete:
+        print("niconico-msky v1.1.0\n")
+        config.update_config(serverurl=args.server_url, delete=True)
     elif args.configure:
         print("niconico-msky v1.1.0\n")
         config.update_config(serverurl=args.server_url)

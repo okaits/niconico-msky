@@ -9,14 +9,29 @@ https://misskey.okaits7534.mydns.jp/share?text=%E6%96%B0%E3%83%BB%E8%B1%AA%E8%A1
 ```
 （出力されたURLのドメイン部分を変えると他のサーバーで流用もできます。）
 ## 使い方
-### 初期設定（全モード共通）
+### 初期設定
+Python3の使える環境をセットアップしてください。
+#### サーバーの追加
 <details><summary>開く</summary>
 
-1. Python3を使える環境をセットアップ
-2. 次のコマンドを実行
+1. 次のコマンドを実行
    ```bash
    python3 main.py -cu 自分のサーバーのURL
    ```
+</details>
+
+#### サーバーの削除
+<details><summary>開く</summary>
+
+1. 次のコマンドを実行する
+   ```bash
+   python3 main.py -du 削除するサーバーのURL
+   ```
+   または
+   ```bash
+   python3 main.py -d
+   ```
+   を実行して、対象のサーバーの番号を入力
 </details>
 
 ### インタラクティブモード
