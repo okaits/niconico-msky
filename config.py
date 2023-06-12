@@ -49,6 +49,9 @@ def update_config(no_add: bool = False, serverurl: str = None) -> None:
             if not serverurl else serverurl
         if serverurl.endswith("/"):
             serverurl = serverurl[:1]
+        if serverurl in config.servers:
+            print("Same entry found in your config file. Aborting.")
+            return
         # Append new server to config
         config = {"servers": config.servers}
         config["servers"].append(serverurl)
