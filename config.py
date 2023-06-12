@@ -6,11 +6,11 @@ class Config():
     """ Config class """
     def __init__(self) -> None:
         self.servers: list[dict] = []
-    
+
     def to_json(self) -> str:
         """ Convert to JSON """
         return json.dumps({"servers": self.servers})
-    
+
     def save(self, converted_json: str = None):
         """ Save config file """
         if not converted_json:
@@ -71,8 +71,13 @@ def update_config(no_add: bool = False, delete: bool = False, serverurl: str = N
         elif len(config.servers) == 1 and not serverurl:
             # Skip server choosing
             serverurl = config.servers[0]
+        # Remove server
+        try:
+            config.servers.remove(serverurl)
+        except ValueError:
+            print("URL not valid.")
+            return
         # Save
-        config.servers.remove(serverurl)
         config.save()
 
     elif os.path.exists(os.path.dirname(__file__) + "/config.json") and not no_add:
