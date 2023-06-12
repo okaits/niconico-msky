@@ -5,7 +5,19 @@ import os
 class Config():
     """ Config class """
     def __init__(self) -> None:
-        self.servers: list[dict] = ""
+        self.servers: list[dict] = []
+    
+    def to_json(self) -> str:
+        """ Convert to JSON """
+        return json.dumps({"servers": self.servers})
+    
+    def save(self, converted_json: str = None):
+        """ Save config file """
+        if not converted_json:
+            converted_json = self.to_json()
+        with open(os.path.dirname(__file__) + "/config.json", "w", encoding="utf-8") as configfile:
+            configfile.write(converted_json)
+        print("Saved.")
 
     class Error(Exception):
         """ Errors """
@@ -44,23 +56,24 @@ def update_config(no_add: bool = False, delete: bool = False, serverurl: str = N
             print("Config file corrupted. Aborting. (use -c to re-generate)")
             return
         if len(config.servers) > 1 and not serverurl:
+            # Server choosing
             print("Multiple servers found in your config file:")
             count = 0
             for serverurl in config.servers:
                 print(f"{count}: {serverurl}")
                 count = count + 1
             choice = input("Which server do you want to delete? > ")
-
             try:
                 serverurl = config.servers[int(choice)]
             except KeyError:
                 print("Value not valid.")
                 return
         elif len(config.servers) == 1 and not serverurl:
+            # Skip server choosing
             serverurl = config.servers[0]
-
+        # Save
         config.servers.remove(serverurl)
-        config = {"servers": config.servers}
+        config.save()
 
     elif os.path.exists(os.path.dirname(__file__) + "/config.json") and not no_add:
         # Config file exists
@@ -72,27 +85,25 @@ def update_config(no_add: bool = False, delete: bool = False, serverurl: str = N
             print("Config file corrupted. creating new one.")
             update_config(no_add=True)
             return
+        # Ask user for server URL, then remove scheme and /
         serverurl = input("Misskey server> ").lstrip("https://").lstrip("http://") \
             if not serverurl else serverurl
         if serverurl.endswith("/"):
             serverurl = serverurl[:1]
+        # Prevent duplication
         if serverurl in config.servers:
             print("Same entry found in your config file. Aborting.")
             return
-        # Append new server to config
-        config = {"servers": config.servers}
-        config["servers"].append(serverurl)
+        # Save
+        config.servers.append(serverurl)
+        config.save()
 
     else:
         # Config file doesn't exists or regenerating requested
+        # Ask user for server URL, then remove scheme and /
         serverurl = input("Misskey server> ").lstrip("https://").lstript("http://") \
             if not serverurl else serverurl
-        if serverurl.endswith("/"):
-            serverurl = serverurl[:1]
-        config = {"servers": [serverurl]}
-
-    # Save config file
-    configjson = json.dumps(config)
-    with open(os.path.dirname(__file__) + "/config.json", "w", encoding="utf-8") as configfile:
-        configfile.write(configjson)
-    print("Config file saved.")
+        # Save
+        config = Config()
+        config.servers.append(serverurl)
+        config.save()
