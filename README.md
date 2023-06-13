@@ -10,7 +10,8 @@ https://misskey.okaits7534.mydns.jp/share?text=%E6%96%B0%E3%83%BB%E8%B1%AA%E8%A1
 （出力されたURLのドメイン部分を変えると他のサーバーで流用もできます。）
 ## 使い方
 ### 初期設定
-Python3の使える環境をセットアップしてください。
+1. Python3とpipの使える環境をセットアップ
+2. `python3 -m pip install -r requirements.txt`
 #### サーバーの追加
 <details><summary>開く</summary>
 
