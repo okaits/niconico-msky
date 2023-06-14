@@ -106,7 +106,7 @@ def update_config(no_add: bool = False, delete: bool = False, serverurl: str = N
     else:
         # Config file doesn't exists or regenerating requested
         # Ask user for server URL, then remove scheme and /
-        serverurl = input("Misskey server> ").lstrip("https://").lstript("http://") \
+        serverurl = input("Misskey server> ").lstrip("https://").lstrip("http://") \
             if not serverurl else serverurl
         # Save
         config = Config()
